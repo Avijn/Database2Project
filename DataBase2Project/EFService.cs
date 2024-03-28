@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static MongoDB.Driver.WriteConcern;
+﻿using System.Diagnostics;
 
 namespace DataBase2Project
 {
-	public class EFService
+    public class EFService
 	{
 		private readonly EFDBConn _efdbconn;
 		public EFService()
@@ -19,7 +13,6 @@ namespace DataBase2Project
 		public long GetBeers(int amount)
 		{
 			var stopwatch = Stopwatch.StartNew();
-			var allBeers = _efdbconn.Beers.Take(amount).ToList<BeerDbModel>();
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -53,7 +46,7 @@ namespace DataBase2Project
 			
 			foreach(var beer in beerList)
 			{
-				BeerDbModel beerDbModel = new BeerDbModel(beer.uid, beer.brand, beer.name, beer.style, beer.hop, beer.yeast, beer.malts, beer.ibu, beer.alcohol, beer.blg);
+				var beerDbModel = new BeerDbModel(beer.uid, beer.brand, beer.name, beer.style, beer.hop, beer.yeast, beer.malts, beer.ibu, beer.alcohol, beer.blg);
 				_efdbconn.Beers.Add(beerDbModel);
 			}
 			_efdbconn.SaveChanges();
@@ -62,27 +55,23 @@ namespace DataBase2Project
 			return stopwatch.ElapsedMilliseconds;
 		}
 
-		/*
-		 * FROM THIS POINT ONWARD THE CODE ISNT TESTED YET
-		 */
-
 		public long DeleteBeers(List<BeerModel> beerList)
 		{
 			var stopwatch = Stopwatch.StartNew();
 			var allBeersThatNeedToBeDeleted = new List<BeerDbModel>();
 			foreach(var beer in beerList)
 			{
-
                 allBeersThatNeedToBeDeleted.Add(_efdbconn.Beers.Where(x => x.uid == beer.uid).FirstOrDefault());
             }	
             foreach (var beer in allBeersThatNeedToBeDeleted)
             {
-				BeerDbModel beerDbModel = beer;//new BeerDbModel(beer.uid, beer.brand, beer.name, beer.style, beer.hop, beer.yeast, beer.malts, beer.ibu, beer.alcohol, beer.blg);
+				var beerDbModel = beer;
                 _efdbconn.Beers.Remove(beerDbModel);
             }
-            _efdbconn.SaveChanges();
 
+            _efdbconn.SaveChanges();
             stopwatch.Stop();
+
 			return stopwatch.ElapsedMilliseconds;
 		}
 
@@ -92,12 +81,12 @@ namespace DataBase2Project
 
             foreach (var beer in beerList)
             {
-                BeerDbModel beerDbModel = new BeerDbModel(beer.uid, beer.brand, beer.name, beer.style, beer.hop, beer.yeast, beer.malts, beer.ibu, "ITS OVER 9000!!!", beer.blg);
+                var beerDbModel = new BeerDbModel(beer.uid, beer.brand, beer.name, beer.style, beer.hop, beer.yeast, beer.malts, beer.ibu, "ITS OVER 9000!!!", beer.blg);
                 _efdbconn.Beers.Update(beerDbModel);
             }
             _efdbconn.SaveChanges();
-
             stopwatch.Stop();
+
             return stopwatch.ElapsedMilliseconds;
         }
     }

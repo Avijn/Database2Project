@@ -1,43 +1,12 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MongoDB.Driver;
-using MongoDB.Bson;
 using System.Diagnostics;
-using static MongoDB.Driver.WriteConcern;
-using System.Xml.Linq;
 
 namespace DataBase2Project.MongoDB
 {
     public class MongoDbConn
     {
         const string connectionUri = "mongodb+srv://arjanv:Ilx5Kh7MwE5jHhWx@cluster0.iqrceqv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-        // Set the ServerApi field of the settings object to set the version of the Stable API on the client
-
-        public void CreateConn()
-        {
-            var settings = MongoClientSettings.FromConnectionString(connectionUri);
-            var dbClient = new MongoClient(settings);
-            var database = dbClient.GetDatabase("Db2Project");
-            var collection = database.GetCollection<BeerDbModel>("beer");
-
-            try
-            {
-                var result = dbClient.GetDatabase("admin").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
-                Console.WriteLine("Pinged your deployment. You successfully connected to MongoDB!");
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-
-
-        }
 
         public long InsertIntoMongoDB(List<BeerModel> beers)
         {
@@ -46,6 +15,7 @@ namespace DataBase2Project.MongoDB
             var database = dbClient.GetDatabase("Db2Project");
             var collection = database.GetCollection<BsonDocument>("beer");
             var beerList = new List<BsonDocument>();
+
             foreach (BeerModel beer in beers)
             {
                 var document = new BsonDocument
@@ -92,10 +62,6 @@ namespace DataBase2Project.MongoDB
             return stopwatch.ElapsedMilliseconds;
         }
 
-
-        /*
-         * HIER MEE VERDER
-         */
         public long UpdateBeers(List<BeerModel> beers)
         {
             var settings = MongoClientSettings.FromConnectionString(connectionUri);

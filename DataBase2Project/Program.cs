@@ -1,20 +1,14 @@
 ﻿using DataBase2Project;
 using DataBase2Project.MongoDB;
-using Newtonsoft.Json;
 
 var apiHandler = new APIHandler();
 var adoNet = new AdoNet();
 var eFService = new EFService();
 var mongoDBConn = new MongoDbConn();
-//var beerlist = await apiHandler.GetBeerDataList(100000);
 var beerlist = eFService.GetBeersWithoutTimer(100000);
-var singleBeer = await apiHandler.GetBeerDataList(1);
-//mongoDBConn.InsertIntoMongoDB(singleBeer.GetRange(0,1));
-//mongoDBConn.UpdateBeers(beerlist);
 run();
 void run()
 {
-
     Console.WriteLine("SELECT");
     Console.WriteLine(" Ado.Net :");
     adoNet.GetBeer(1);

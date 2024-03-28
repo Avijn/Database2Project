@@ -8,12 +8,12 @@ namespace DataBase2Project
 
 		public DbSet<BeerDbModel> Beers { get; set; }
 
-		public EFDBConn()
-		{
-			this._connectionString = @"Server=localhost;Database=BeerCollection;User Id=admin;Password=admin;Encrypt=True;TrustServerCertificate=True;ApplicationIntent=ReadWrite;";
-		}
+        public EFDBConn()
+        {
+            _connectionString = @"Server=localhost;Database=BeerCollection;User Id=admin;Password=admin;Encrypt=True;TrustServerCertificate=True;ApplicationIntent=ReadWrite;";
+        }
 
-		public string GetConnectionString()
+        public string GetConnectionString()
 		{
 			return _connectionString;
 		}

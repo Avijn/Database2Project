@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static MongoDB.Driver.WriteConcern;
-using MongoDB.Driver;
-using Amazon.Auth.AccessControlPolicy;
-using System.Data;
 
 namespace DataBase2Project
 {
@@ -23,16 +13,16 @@ namespace DataBase2Project
         {
             var query = $"SELECT TOP ({amount}) * FROM [BeerCollection].[dbo].[Beers]";
             var stopwatch = Stopwatch.StartNew();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
+                var command = new SqlCommand(query, connection);
                 command.Connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         var uid = Guid.Parse(reader["uid"].ToString());
-                        BeerDbModel beer = new BeerDbModel(
+                        var beer = new BeerDbModel(
                             int.Parse(reader["id"].ToString()),
                             Guid.Parse(reader["uid"].ToString()),
                             reader["brand"].ToString(),
@@ -58,12 +48,12 @@ namespace DataBase2Project
                 "VALUES(@uid, @brand, @name, @style, @hop, @yeasts, @malts, @ibu, @alochol, @blg)";
 
             var stopwatch = Stopwatch.StartNew();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
 
-                foreach (BeerModel beer in beers)
+                foreach (var beer in beers)
                 {
-                    SqlCommand cmd = new SqlCommand(query, connection);
+                    var cmd = new SqlCommand(query, connection);
                     cmd.Parameters.Add("@uid", SqlDbType.UniqueIdentifier).Value = beer.uid;
                     cmd.Parameters.Add("@brand", SqlDbType.NVarChar).Value = beer.brand;
                     cmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = beer.name;
@@ -89,11 +79,11 @@ namespace DataBase2Project
         {
             var query = $"DELETE FROM [dbo].[Beers] WHERE [uid] = @uid";
             var stopwatch = Stopwatch.StartNew();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
-                foreach (BeerModel beer in beers)
+                foreach (var beer in beers)
                 {
-                    SqlCommand cmd = new SqlCommand(query, connection);
+                    var cmd = new SqlCommand(query, connection);
                     cmd.Parameters.Add("@uid", SqlDbType.UniqueIdentifier).Value = beer.uid;
                     connection.Open();
                     cmd.ExecuteNonQuery();
@@ -109,11 +99,11 @@ namespace DataBase2Project
         {
             var query = $"UPDATE [dbo].[Beers] SET [alcohol] = 'ITS OVER 9000!!!' WHERE [uid] = @uid";
             var stopwatch = Stopwatch.StartNew();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
-                foreach (BeerModel beer in beers)
+                foreach (var beer in beers)
                 {
-                    SqlCommand cmd = new SqlCommand(query, connection);
+                    var cmd = new SqlCommand(query, connection);
                     cmd.Parameters.Add("@uid", SqlDbType.UniqueIdentifier).Value = beer.uid;
                     connection.Open();
                     cmd.ExecuteNonQuery();

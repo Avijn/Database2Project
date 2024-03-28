@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataBase2Project
+﻿namespace DataBase2Project
 {
-	public class BeerModel
+    public class BeerModel
 	{
 		public Guid uid { get; set; }
 		public string brand { get; set; }
