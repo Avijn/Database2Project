@@ -11,13 +11,31 @@ namespace DataBase2Project
 		}
 
 		public long GetBeers(int amount)
-		{
-			var stopwatch = Stopwatch.StartNew();
-			stopwatch.Stop();
-			return stopwatch.ElapsedMilliseconds;
-		}
-		
-		public List<BeerModel> GetBeersWithoutTimer(int amount)
+        {
+            var stopwatch = Stopwatch.StartNew(); 
+			var beerList = new List<BeerModel>();
+            var allBeers = _efdbconn.Beers.Take(amount).ToList<BeerDbModel>();
+            foreach (var beer in allBeers)
+            {
+                beerList.Add(new BeerModel()
+                {
+                    uid = Guid.NewGuid(),
+                    brand = beer.brand,
+                    name = beer.name,
+                    style = beer.style,
+                    hop = beer.hop,
+                    yeast = beer.yeast,
+                    malts = beer.malts,
+                    ibu = beer.ibu,
+                    alcohol = beer.alcohol,
+                    blg = beer.blg
+                });
+            }
+            stopwatch.Stop();
+            return stopwatch.ElapsedMilliseconds;
+        }
+
+        public List<BeerModel> GetBeersWithoutTimer(int amount)
 		{
 			var allBeers = _efdbconn.Beers.Take(amount).ToList<BeerDbModel>();
 			var beerList = new List<BeerModel>();
