@@ -11,7 +11,7 @@
      Miliseconds for 1 row:       0
      Miliseconds for 10 row:      0
      Miliseconds for 100 row:     0
-     Miliseconds for 1000 row:    0
+     Miliseconds for 1000 row:    3
 
  ## MongoDB :
      Miliseconds for 1 row:       24
